@@ -7,11 +7,10 @@
 <meta name="description" content="rastaval | فرم درخواست کارشناسی ارزش نسبی شرکت (ورود اطلاعات توسط کاربر)"/>
 <style>
   :root{
-    --brand:#0C69B0; --brand-2:#0F8CD9; --warn:#D97706;
-    --bg:#F5F7FB; --card:#FFFFFF; --border:#E6EEF6; --muted:#64748B; --ok:#16a34a;
+    --brand:#0C69B0; --brand-2:#0F8CD9; --bg:#F5F7FB; --card:#FFFFFF;
+    --border:#E6EEF6; --muted:#64748B; --ok:#16a34a;
   }
-  html,body{height:100%}
-  body{font-family:Tahoma,Arial,Helvetica,sans-serif;direction:rtl;background:var(--bg);margin:0;color:#0f172a}
+  body{font-family:Tahoma,Arial,Helvetica,sans-serif;background:var(--bg);margin:0;color:#0f172a}
   header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
   header .wrap{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
   header h1{margin:0;font-size:18px;color:var(--brand)}
@@ -33,7 +32,6 @@
   .ok{background:#ecfdf5;border:1px solid #bbf7d0;padding:12px;border-radius:8px}
   .center{text-align:center}
   .hidden{display:none}
-  /* mini modal */
   #confirmBox{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
   #confirmBox .card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;max-width:520px;width:95%}
   a.inline{color:var(--brand);text-decoration:none}
@@ -95,7 +93,7 @@
   <section id="status" class="hidden"></section>
 </main>
 
-<!-- دیالوگ انتخاب هزینه -->
+<!-- انتخاب هزینه و ارسال -->
 <div id="confirmBox" aria-hidden="true">
   <div class="card" role="dialog" aria-label="انتخاب هزینه کارشناسی">
     <h3 style="margin:0 0 8px;color:#0C69B0">انتخاب هزینه کارشناسی</h3>
@@ -111,10 +109,18 @@
   </div>
 </div>
 
+<!-- CSP fallback: iframe + hidden form -->
+<iframe name="gas_hidden_iframe" style="display:none"></iframe>
+<form id="gasForm" 
+      action="https://script.google.com/macros/s/AKfycby5g5PFxJs0z_DMxd0UGyn7hiYHzqeHvXzm2EnYkypUuRMUA3yHAQ67r54cadJz0AKURw/exec"
+      method="POST" target="gas_hidden_iframe" style="display:none">
+  <input type="hidden" name="payload" id="gasPayload">
+</form>
+
 <script>
 /* ===== پیکربندی ===== */
-const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycby5dn5H1RApWA9CtlSEwJAO-8zvhoAHxVVWKwlcE-GxGq8F4DKq1ZnLttJPgCvCxgh8ug/exec";
-const ADMIN_WHATSAPP = "989036860573"; // شماره ادمین برای نمایش در پیام موفقیت
+const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycby5g5PFxJs0z_DMxd0UGyn7hiYHzqeHvXzm2EnYkypUuRMUA3yHAQ67r54cadJz0AKURw/exec";
+const ADMIN_WHATSAPP = "989036860573";
 
 /* ===== ابزارها ===== */
 const fmt = n => (isNaN(n)? "-" : (+n).toLocaleString('fa-IR') + ' تومان');
@@ -138,7 +144,7 @@ function addRow(){
   ["input","change"].forEach(ev=> tr.addEventListener(ev, computeContribs));
 }
 document.getElementById("addRow").addEventListener("click", addRow);
-addRow(); // یک ردیف اولیه
+addRow();
 
 function computeContribs(){
   tbody.querySelectorAll("tr").forEach(tr=>{
@@ -184,22 +190,27 @@ function buildCalculatedSummary(){
   };
 }
 
-/* ===== ارسال امن: fetch → و اگر بلاک شد: GET Navigation (تب جدید) ===== */
+/* ===== ارسال امن (fetch یا fallback فرم مخفی) ===== */
 async function sendToGAS(payload){
-  // تلاش اول: fetch (اگر CSP اجازه بده)
   try{
     const res = await fetch(SUBMIT_ENDPOINT, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(payload),
-      credentials:'omit'
+      credentials: 'omit'
     });
-    try { return await res.json(); } catch { return {ok:true}; }
+    try{ return await res.json(); }catch{ return {ok:true}; }
   }catch(_){
-    // فِیلبَک قطعی روی GitHub Pages: ناوبری به doGet با payload
-    const url = SUBMIT_ENDPOINT + '?payload=' + encodeURIComponent(JSON.stringify(payload));
-    window.open(url, '_blank'); // تب جدید؛ از CSP عبور می‌کند
-    return { ok:true };
+    return new Promise(resolve=>{
+      const form = document.getElementById('gasForm');
+      const input = document.getElementById('gasPayload');
+      input.value = JSON.stringify(payload);
+      const iframe = document.getElementsByName('gas_hidden_iframe')[0];
+      const onLoad = ()=>{ try{iframe.removeEventListener('load', onLoad);}catch(e){} resolve({ok:true}); };
+      try{ iframe.addEventListener('load', onLoad); }catch(e){ setTimeout(()=>resolve({ok:true}), 1200); }
+      form.submit();
+      setTimeout(()=>resolve({ok:true}), 2500);
+    });
   }
 }
 
