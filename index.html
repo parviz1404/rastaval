@@ -4,77 +4,67 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>rastaval — درخواست کارشناسی ارزش شرکت</title>
-<meta name="description" content="rastaval | فرم درخواست کارشناسی ارزش نسبی شرکت (ورود اطلاعات توسط کاربر)"/>
 <style>
-  :root{
-    --brand:#0C69B0; --brand-2:#0F8CD9; --warn:#D97706;
-    --bg:#F5F7FB; --card:#FFFFFF; --border:#E6EEF6; --muted:#64748B; --ok:#16a34a;
-  }
-  html,body{height:100%}
-  body{font-family:Tahoma,Arial,Helvetica,sans-serif;direction:rtl;background:var(--bg);margin:0;color:#0f172a}
-  header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-  header .wrap{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
-  header h1{margin:0;font-size:18px;color:var(--brand)}
-  main{max-width:1000px;margin:0 auto;padding:12px}
-  section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-  h2{margin:0 0 10px;color:var(--brand);font-size:18px}
-  label{display:block;margin-top:10px;font-weight:600}
-  input,select{width:100%;padding:10px;margin-top:6px;border:1px solid var(--border);border-radius:10px;background:#fff}
-  input:focus,select:focus{outline:2px solid var(--brand-2);border-color:transparent}
-  table{width:100%;border-collapse:collapse;margin-top:12px}
-  th,td{border:1px solid var(--border);padding:8px;text-align:center}
-  th{background:#F1F5F9}
-  .btn{background:var(--brand);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
-  .btn:hover{filter:brightness(1.05)}
-  .btn.ghost{background:#EDF2F7;color:#111}
-  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .muted{color:var(--muted);font-size:12px}
-  .notice{background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:10px}
-  .ok{background:#ecfdf5;border:1px solid #bbf7d0;padding:12px;border-radius:8px}
-  .center{text-align:center}
-  .hidden{display:none}
-  /* mini modal */
-  #confirmBox{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
-  #confirmBox .card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;max-width:520px;width:95%}
-  a.inline{color:var(--brand);text-decoration:none}
-  .small{font-size:13px;color:var(--muted)}
+:root{--brand:#0C69B0;--brand2:#0F8CD9;--bg:#F5F7FB;--card:#fff;--bor:#E6EEF6;--muted:#64748B;--ok:#16a34a}
+body{font-family:Tahoma,Arial,Helvetica,sans-serif;background:var(--bg);margin:0;color:#0f172a}
+header{background:#fff;border-bottom:1px solid var(--bor);position:sticky;top:0}
+.wrap{max-width:1000px;margin:auto;padding:12px 16px}
+h1{margin:0;color:var(--brand);font-size:18px}
+main{max-width:1000px;margin:auto;padding:12px}
+section{background:var(--card);border:1px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px}
+h2{margin:0 0 10px;color:var(--brand);font-size:18px}
+label{display:block;margin-top:10px;font-weight:600}
+input,select{width:100%;padding:10px;margin-top:6px;border:1px solid var(--bor);border-radius:10px}
+input:focus,select:focus{outline:2px solid var(--brand2);border-color:transparent}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{border:1px solid var(--bor);padding:8px;text-align:center}
+th{background:#F1F5F9}
+.btn{background:var(--brand);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:#EDF2F7;color:#111}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted);font-size:12px}
+.notice{background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:10px}
+.ok{background:#ecfdf5;border:1px solid #bbf7d0;padding:12px;border-radius:8px}
+.center{text-align:center}
+.hidden{display:none}
+#confirmBox{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
+#confirmBox .card{background:#fff;border-radius:12px;border:1px solid var(--bor);padding:14px;max-width:520px;width:95%}
+a.inline{color:var(--brand);text-decoration:none}
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <h1>rastaval | فرم درخواست کارشناسی ارزش نسبی شرکت</h1>
-</div></header>
+<header><div class="wrap"><h1>rastaval | فرم درخواست کارشناسی ارزش نسبی شرکت</h1></div></header>
 
 <main>
   <section>
-    <div class="notice small">
-      این صفحه فقط برای <b>ورود اطلاعات</b> است. پس از ثبت، درخواست شما برای ادمین ارسال می‌شود؛
-      <b>خروجی محاسبه به کاربر نمایش داده نمی‌شود</b> و پس از بررسی پرداخت، نتیجه توسط ادمین برای شما ارسال خواهد شد.
+    <div class="notice muted">
+      این صفحه صرفاً برای <b>ورود اطلاعات</b> است؛ نتیجه محاسبه به کاربر نمایش داده نمی‌شود و پس از بررسی پرداخت توسط ادمین ارسال می‌گردد.
     </div>
 
     <h2>۱) ورود اطلاعات شرکت</h2>
     <label>نام شرکت
-      <input id="companyName" type="text" placeholder="مثلاً: شرکت خاک و بتن ۲"/>
+      <input id="companyName" type="text" placeholder="مثلاً: شرکت خاک و بتن ۲">
     </label>
     <label>تاریخ اولین پروانه
-      <input id="licenseDate" type="date"/>
+      <input id="licenseDate" type="date">
     </label>
 
     <div class="row">
       <label style="flex:1">قیمت نو تجهیزات (تومان)
-        <input id="equipPrice" type="number" min="0" step="1" placeholder="مثلاً 2500000000"/>
+        <input id="equipPrice" type="text" inputmode="numeric" placeholder="مثلاً ۲,۵۰۰,۰۰۰,۰۰۰">
       </label>
       <label style="flex:1">قیمت پروانه مدیرعامل (تومان)
-        <input id="ceoPrice" type="number" min="0" step="1" placeholder="مثلاً 600000000"/>
+        <input id="ceoPrice" type="text" inputmode="numeric" placeholder="مثلاً ۶۰۰,۰۰۰,۰۰۰">
       </label>
     </div>
 
     <h3 style="margin-top:16px">مهندسین</h3>
     <table id="engTable">
       <thead>
-      <tr>
-        <th>نقش</th><th>پایه</th><th>مدت (ماه)</th><th>مبلغ قرارداد (تومان)</th><th>سهم محاسباتی = مبلغ × (ماه/۱۲)</th><th>حذف</th>
-      </tr>
+        <tr>
+          <th>نقش</th><th>پایه</th><th>مدت (ماه)</th><th>مبلغ قرارداد (تومان)</th><th>سهم محاسباتی = مبلغ × (ماه/۱۲)</th><th>حذف</th>
+        </tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -84,7 +74,7 @@
     </div>
 
     <div class="muted" style="margin-top:10px">
-      توضیح: مبالغ قرارداد مهندسین به‌صورت <b>خوداظهاری فروشنده</b> است و باید قبل از معامله توسط خریدار <b>راستی‌آزمایی</b> شود.
+      مبالغ قرارداد مهندسین به‌صورت <b>خوداظهاری فروشنده</b> است و باید قبل از معامله توسط خریدار <b>راستی‌آزمایی</b> شود.
     </div>
 
     <div class="center" style="margin-top:16px">
@@ -95,7 +85,7 @@
   <section id="status" class="hidden"></section>
 </main>
 
-<!-- انتخاب هزینه و ارسال -->
+<!-- انتخاب هزینه -->
 <div id="confirmBox" aria-hidden="true">
   <div class="card" role="dialog" aria-label="انتخاب هزینه کارشناسی">
     <h3 style="margin:0 0 8px;color:#0C69B0">انتخاب هزینه کارشناسی</h3>
@@ -103,7 +93,7 @@
       <label style="flex:1"><input type="radio" name="payOpt" value="3" checked> ۳,۰۰۰,۰۰۰ تومان — فقط کارشناسی</label>
       <label style="flex:1"><input type="radio" name="payOpt" value="10"> ۱۰,۰۰۰,۰۰۰ تومان — کارشناسی + معرفی مشتری (حداکثر ۲ ماه)</label>
     </div>
-    <div class="small muted">با تأیید، اطلاعات شما برای ادمین ارسال می‌شود. نتیجهٔ محاسبات پس از بررسی پرداخت توسط ادمین برای شما ارسال می‌گردد.</div>
+    <div class="muted">با تأیید، اطلاعات شما برای ادمین ارسال می‌شود.</div>
     <div class="row" style="margin-top:10px;justify-content:flex-end">
       <button class="btn ghost" id="cancelConfirm" type="button">انصراف</button>
       <button class="btn" id="sendConfirm" type="button">✅ تأیید و ارسال درخواست</button>
@@ -111,7 +101,7 @@
   </div>
 </div>
 
-<!-- CSP fallback: iframe + hidden form (اگر fetch به علت CSP مسدود شد) -->
+<!-- CSP fallback -->
 <iframe name="gas_hidden_iframe" style="display:none"></iframe>
 <form id="gasForm" action="https://script.google.com/macros/s/AKfycby5dn5H1RApWA9CtlSEwJAO-8zvhoAHxVVWKwlcE-GxGq8F4DKq1ZnLttJPgCvCxgh8ug/exec"
       method="POST" target="gas_hidden_iframe" style="display:none">
@@ -119,14 +109,28 @@
 </form>
 
 <script>
-/* ===== پیکربندی ===== */
+/* ===== تنظیمات ===== */
 const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycby5dn5H1RApWA9CtlSEwJAO-8zvhoAHxVVWKwlcE-GxGq8F4DKq1ZnLttJPgCvCxgh8ug/exec";
-const ADMIN_WHATSAPP = "989036860573"; // شماره ادمین برای نمایش در پیام موفقیت
+const ADMIN_WHATSAPP = "989036860573";
 
-/* ===== ابزارها ===== */
-const fmt = n => (isNaN(n)? "-" : (+n).toLocaleString('fa-IR') + ' تومان');
-function yearsSince(dateStr){ if(!dateStr) return 0; const d=new Date(dateStr); if(isNaN(d)) return 0; return (Date.now()-d)/(365.2425*24*3600*1000); }
-function ageCoef(y){ if(y<3) return 0.8; if(y<=5) return 0.75; if(y<=10) return 0.7; return 0.65; }
+/* ===== ابزارهای عدد ===== */
+function normalizeDigitsClient(s){
+  if (s===null || s===undefined) return '';
+  s = String(s);
+  const map = {'۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9',
+               '٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
+  return s.replace(/[۰-۹٠-٩]/g, d => map[d]).replace(/,/g,'').trim();
+}
+function readNum(id){
+  const v = document.getElementById(id).value;
+  const n = Number(normalizeDigitsClient(v));
+  return isNaN(n) ? 0 : n;
+}
+function readNumDirect(v){
+  const n = Number(normalizeDigitsClient(v));
+  return isNaN(n) ? 0 : n;
+}
+const fmt = n => (isNaN(n)? "-" : Math.round(+n).toLocaleString('fa-IR') + ' تومان');
 
 /* ===== جدول مهندسین ===== */
 const tbody = document.querySelector("#engTable tbody");
@@ -135,34 +139,35 @@ function addRow(){
   tr.innerHTML = `
     <td><select class="role"><option>شاغل</option><option>هیئت مدیره</option></select></td>
     <td><select class="grade"><option>1</option><option>2</option><option>3</option></select></td>
-    <td><input class="months" type="number" min="0" step="0.1" value="12"></td>
-    <td><input class="contract" type="number" min="0" step="1" value=""></td>
+    <td><input class="months" type="text" inputmode="numeric" value="12"></td>
+    <td><input class="contract" type="text" inputmode="numeric" value=""></td>
     <td class="contrib">-</td>
     <td><button class="btn ghost btnDel" type="button">حذف</button></td>
   `;
   tbody.appendChild(tr);
-  tr.querySelector(".btnDel").addEventListener("click", ()=>{ tr.remove(); });
+  tr.querySelector(".btnDel").addEventListener("click", ()=> tr.remove());
   ["input","change"].forEach(ev=> tr.addEventListener(ev, computeContribs));
 }
 document.getElementById("addRow").addEventListener("click", addRow);
-addRow(); // یک ردیف اولیه
-
+addRow();
 function computeContribs(){
   tbody.querySelectorAll("tr").forEach(tr=>{
-    const months = +tr.querySelector(".months").value || 0;
-    const contract = +tr.querySelector(".contract").value || 0;
-    const contrib = contract * (months/12);
-    tr.querySelector(".contrib").textContent = fmt(contrib);
+    const months   = readNumDirect(tr.querySelector(".months").value);
+    const contract = readNumDirect(tr.querySelector(".contract").value);
+    tr.querySelector(".contrib").textContent = fmt(contract * (months/12));
   });
 }
 
-/* ===== محاسبات برای ارسال ===== */
+/* ===== محاسبات ===== */
+function yearsSince(dateStr){ if(!dateStr) return 0; const d=new Date(dateStr); if(isNaN(d)) return 0; return (Date.now()-d)/(365.2425*24*3600*1000); }
+function ageCoef(y){ if(y<3) return 0.8; if(y<=5) return 0.75; if(y<=10) return 0.7; return 0.65; }
+
 function buildCalculatedSummary(){
   const yrs = yearsSince(document.getElementById("licenseDate").value);
   const yrsInt = Math.floor(yrs);
   const historyVal = Math.min(700_000_000, 100_000_000 + Math.max(yrsInt - 5, 0)*100_000_000);
 
-  const equipPrice = +document.getElementById("equipPrice").value || 0;
+  const equipPrice = readNum('equipPrice');
   const coef = ageCoef(yrs);
   const equipVal = equipPrice * coef;
 
@@ -170,14 +175,14 @@ function buildCalculatedSummary(){
   tbody.querySelectorAll("tr").forEach(tr=>{
     const role = tr.querySelector(".role").value;
     const grade = tr.querySelector(".grade").value;
-    const months = +tr.querySelector(".months").value || 0;
-    const contract = +tr.querySelector(".contract").value || 0;
+    const months = readNumDirect(tr.querySelector(".months").value);
+    const contract = readNumDirect(tr.querySelector(".contract").value);
     const contrib = contract * (months/12);
     if(role==="شاغل") sumActive += contrib; else sumBoard += contrib;
     engineers.push({role, grade, months, contract, contribText: fmt(contrib)});
   });
 
-  const ceoPrice = +document.getElementById("ceoPrice").value || 0;
+  const ceoPrice = readNum('ceoPrice');
   const quotaCount = 0, quotaPrice = 0;
   const quotaVal = quotaCount * quotaPrice * 0.5;
 
@@ -187,69 +192,53 @@ function buildCalculatedSummary(){
     total, historyVal, equipVal,
     empActive: sumActive, empBoard: sumBoard, ceo: ceoPrice, quota: quotaVal,
     coefAge: isNaN(coef) ? "-" : coef,
-    engineers
+    engineers,
+    equipPrice, ceoPrice
   };
 }
 
-/* ===== ارسال امن (fetch یا fallback با فرم مخفی) ===== */
+/* ===== ارسال امن (fetch → fallback فرم) ===== */
 async function sendToGAS(payload){
-  // تلاش اول: fetch مستقیم
   try{
     const res = await fetch(SUBMIT_ENDPOINT, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(payload),
-      credentials: 'omit'
+      credentials:'omit'
     });
-    // اگر پاسخ JSON آورد، برگردان
-    try{ const j = await res.json(); return j; } catch(e){ return {ok:true}; }
-  }catch(fetchErr){
-    // fallback: ارسال با فرم پنهان (بای‌پس CSP connect-src)
+    try { return await res.json(); } catch { return {ok:true}; }
+  }catch(_){
     return new Promise(resolve=>{
-      try{
-        const form = document.getElementById('gasForm');
-        const input = document.getElementById('gasPayload');
-        input.value = JSON.stringify(payload);
-        const iframe = document.getElementsByName('gas_hidden_iframe')[0];
-        const onLoad = ()=>{
-          try{ iframe.removeEventListener('load', onLoad); }catch(e){}
-          // بعد از لود آیفریم فرض می‌کنیم درخواست به سرور رفته است
-          resolve({ok:true});
-        };
-        try{ iframe.addEventListener('load', onLoad); }catch(e){ setTimeout(()=>resolve({ok:true}), 1000); }
-        form.submit();
-        // اگر آیفریم لود نشد، پس از 2 ثانیه assume ok
-        setTimeout(()=>resolve({ok:true}), 2500);
-      }catch(err){
-        resolve({ok:false, error:String(err)});
-      }
+      const form  = document.getElementById('gasForm');
+      const input = document.getElementById('gasPayload');
+      input.value = JSON.stringify(payload);
+      const iframe = document.getElementsByName('gas_hidden_iframe')[0];
+      const onLoad = ()=>{ try{iframe.removeEventListener('load', onLoad);}catch(e){} resolve({ok:true}); };
+      try{ iframe.addEventListener('load', onLoad); }catch(e){ setTimeout(()=>resolve({ok:true}), 1200); }
+      form.submit();
+      setTimeout(()=>resolve({ok:true}), 2500);
     });
   }
 }
 
-/* ===== UI: باز/بستن پنجره انتخاب هزینه ===== */
+/* ===== UI ===== */
 const confirmBox = document.getElementById("confirmBox");
 document.getElementById("requestBtn").addEventListener("click", ()=>{
   computeContribs();
-  confirmBox.style.display = "flex";
-  confirmBox.setAttribute("aria-hidden","false");
-  window.scrollTo(0,0);
+  confirmBox.style.display = "flex"; confirmBox.setAttribute("aria-hidden","false"); window.scrollTo(0,0);
 });
 document.getElementById("cancelConfirm").addEventListener("click", ()=>{
-  confirmBox.style.display = "none";
-  confirmBox.setAttribute("aria-hidden","true");
+  confirmBox.style.display = "none"; confirmBox.setAttribute("aria-hidden","true");
 });
 
-/* ===== ارسال نهایی به GAS ===== */
+/* ===== ارسال نهایی ===== */
 document.getElementById("sendConfirm").addEventListener("click", async ()=>{
   const statusSec = document.getElementById("status");
   try{
     const company = (document.getElementById("companyName").value || "").trim();
     if(!company){ alert("لطفاً نام شرکت را وارد کنید."); return; }
     const licenseDate = document.getElementById("licenseDate").value || "";
-
     const calc = buildCalculatedSummary();
-    const engineers = calc.engineers;
 
     const optVal = document.querySelector('input[name="payOpt"]:checked').value;
     const paymentOption = (optVal==='3')
@@ -258,13 +247,13 @@ document.getElementById("sendConfirm").addEventListener("click", async ()=>{
 
     const payload = {
       company, licenseDate,
-      equipPrice: +document.getElementById("equipPrice").value || 0,
-      ceoPrice: +document.getElementById("ceoPrice").value || 0,
+      equipPrice: calc.equipPrice,
+      ceoPrice:   calc.ceoPrice,
       quotaCount: 0, quotaPrice: 0,
       total: calc.total, historyVal: calc.historyVal, equipVal: calc.equipVal,
       empActive: calc.empActive, empBoard: calc.empBoard, ceo: calc.ceo, quota: calc.quota,
       coefAge: calc.coefAge,
-      engineers,
+      engineers: calc.engineers,
       paymentOption,
       requestedAt: new Date().toISOString()
     };
@@ -283,12 +272,12 @@ document.getElementById("sendConfirm").addEventListener("click", async ()=>{
           لطفاً مبلغ را کارت‌به‌کارت کنید و سپس پیام «پرداخت شد» را برای ادمین ارسال کنید.<br>
           <a class="inline" href="https://wa.me/${ADMIN_WHATSAPP}" target="_blank">ارتباط با ادمین در واتساپ</a>
         </div>`;
-    } else {
-      statusSec.innerHTML = `<div class="notice" style="background:#fee;border-color:#fecaca">خطا در ارسال درخواست: ${(res && res.error) ? res.error : 'نامشخص'}</div>`;
+    }else{
+      statusSec.innerHTML = `<div class="notice" style="background:#fee;border-color:#fecaca">خطا در ارسال: ${(res && res.error) ? res.error : 'نامشخص'}</div>`;
     }
   }catch(err){
-    document.getElementById("status").classList.remove("hidden");
-    document.getElementById("status").innerHTML = `<div class="notice" style="background:#fee;border-color:#fecaca">خطای غیرمنتظره: ${String(err)}</div>`;
+    statusSec.classList.remove("hidden");
+    statusSec.innerHTML = `<div class="notice" style="background:#fee;border-color:#fecaca">خطای غیرمنتظره: ${String(err)}</div>`;
   }
 });
 </script>
