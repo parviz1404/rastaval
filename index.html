@@ -1,147 +1,122 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>rastaval | محاسبه‌گر ارزش نسبی شرکت</title>
-  <style>
-    :root{
-      --brand:#0C69B0;--brand-2:#0F8CD9;--accent:#22A699;--warn:#D97706;--danger:#B91C1C;
-      --bg:#F5F7FB;--card:#FFFFFF;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;
-    }
-    body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--text)}
-    header{background:#fff;padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
-    h1{margin:0;color:var(--brand);font-size:18px}
-    main{max-width:980px;margin:0 auto;padding:12px}
-    section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin:12px 0}
-    h2{margin:0 0 10px;color:var(--brand)}
-    label{display:block;margin-top:10px;font-weight:600}
-    input,select{width:100%;padding:10px;margin-top:6px;border:1px solid var(--border);border-radius:10px;background:#fff}
-    input:focus,select:focus{outline:2px solid var(--brand-2);border-color:transparent}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border:1px solid var(--border);padding:8px;text-align:center}
-    th{background:#F1F5F9}
-    .btn{background:var(--brand);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
-    .btn:hover{filter:brightness(1.05)}
-    .btn.ghost{background:#EDF2F7;color:#111}
-    .row-actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
-    .sum{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:10px;background:#FAFCFF;margin-top:8px}
-    .locked{background:#F8FAFC;border:2px dashed var(--border);color:#334155;padding:18px;border-radius:12px;text-align:center}
-    .muted{color:var(--muted);font-size:12px}
-    .notice{background:#FFF7ED;border:1px solid #FED7AA;border-radius:12px;padding:10px;margin-bottom:8px}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>rastaval — درخواست کارشناسی ارزش شرکت</title>
+<meta name="description" content="rastaval | فرم درخواست کارشناسی ارزش نسبی شرکت (ورود اطلاعات توسط کاربر)"/>
+<style>
+  :root{
+    --brand:#0C69B0; --brand-2:#0F8CD9; --warn:#D97706;
+    --bg:#F5F7FB; --card:#FFFFFF; --border:#E6EEF6; --muted:#64748B; --ok:#16a34a;
+  }
+  html,body{height:100%}
+  body{font-family:Tahoma,Arial,Helvetica,sans-serif;direction:rtl;background:var(--bg);margin:0;color:#0f172a}
+  header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+  header .wrap{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:10px}
+  header h1{margin:0;font-size:18px;color:var(--brand)}
+  main{max-width:1000px;margin:0 auto;padding:12px}
+  section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+  h2{margin:0 0 10px;color:var(--brand);font-size:18px}
+  label{display:block;margin-top:10px;font-weight:600}
+  input,select{width:100%;padding:10px;margin-top:6px;border:1px solid var(--border);border-radius:10px;background:#fff}
+  input:focus,select:focus{outline:2px solid var(--brand-2);border-color:transparent}
+  table{width:100%;border-collapse:collapse;margin-top:12px}
+  th,td{border:1px solid var(--border);padding:8px;text-align:center}
+  th{background:#F1F5F9}
+  .btn{background:var(--brand);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
+  .btn:hover{filter:brightness(1.05)}
+  .btn.ghost{background:#EDF2F7;color:#111}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .muted{color:var(--muted);font-size:12px}
+  .notice{background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:10px}
+  .ok{background:#ecfdf5;border:1px solid #bbf7d0}
+  .center{text-align:center}
+  .hidden{display:none}
+  /* mini modal */
+  #confirmBox{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:50}
+  #confirmBox .card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px;max-width:520px;width:95%}
+</style>
 </head>
 <body>
-<header>
-  <h1>rastaval | محاسبه‌گر ارزش نسبی شرکت</h1>
-</header>
+<header><div class="wrap">
+  <h1>rastaval | فرم درخواست کارشناسی ارزش نسبی شرکت</h1>
+</div></header>
 
 <main>
-  <!-- 1) Inputs -->
-  <section id="inputs">
+  <section>
     <div class="notice muted">
-      لینک عمومی فقط برای ورود اطلاعات است. دسترسی به خروجی‌ها پس از پرداخت و فقط با لینکی که شامل <code>?approve=نام‌شرکت&amp;key=توکن</code> باشد فعال می‌شود.
+      این صفحه فقط برای <b>ورود اطلاعات</b> است. پس از ثبت، درخواست شما برای ادمین ارسال می‌شود؛
+      <b>خروجی محاسبه به کاربر نمایش داده نمی‌شود</b> و پس از بررسی هزینه، نتیجه توسط ادمین برای شما ارسال خواهد شد.
     </div>
 
-    <h2>۱) ورود اطلاعات</h2>
+    <h2>۱) ورود اطلاعات شرکت</h2>
     <label>نام شرکت
       <input id="companyName" type="text" placeholder="مثلاً: شرکت خاک و بتن ۲"/>
     </label>
     <label>تاریخ اولین پروانه
       <input id="licenseDate" type="date"/>
     </label>
-    <label>قیمت نو تجهیزات (تومان)
-      <input id="equipPrice" type="number" min="0" step="1" placeholder="2500000000"/>
-    </label>
-    <label>پایه پروانه مدیرعامل
-      <select id="ceoLicense">
-        <option>پایه 1</option><option>پایه 2</option><option>پایه 3</option>
-      </select>
-    </label>
-    <label>قیمت پروانه مدیرعامل (تومان)
-      <input id="ceoPrice" type="number" min="0" step="1" placeholder="600000000"/>
-    </label>
-    <div class="row-actions">
-      <label style="flex:1">تعداد سهمیه مانده
-        <input id="quotaCount" type="number" min="0" step="1" placeholder="0"/>
+
+    <div class="row">
+      <label style="flex:1">قیمت نو تجهیزات (تومان)
+        <input id="equipPrice" type="number" min="0" step="1" placeholder="مثلاً 2500000000"/>
       </label>
-      <label style="flex:1">قیمت روز هر سهمیه (تومان)
-        <input id="quotaPrice" type="number" min="0" step="1" placeholder="0"/>
+      <label style="flex:1">قیمت پروانه مدیرعامل (تومان)
+        <input id="ceoPrice" type="number" min="0" step="1" placeholder="مثلاً 600000000"/>
       </label>
     </div>
 
-    <h3 style="margin-top:18px">جدول مهندسین</h3>
+    <h3 style="margin-top:16px">مهندسین</h3>
     <table id="engTable">
       <thead>
-        <tr>
-          <th>نقش</th><th>پایه</th><th>مدت قرارداد (ماه)</th><th>مبلغ قرارداد (تومان)</th><th>سهم محاسباتی = مبلغ × (ماه/۱۲)</th><th>حذف</th>
-        </tr>
+      <tr>
+        <th>نقش</th><th>پایه</th><th>مدت (ماه)</th><th>مبلغ قرارداد (تومان)</th><th>سهم محاسباتی = مبلغ × (ماه/۱۲)</th><th>حذف</th>
+      </tr>
       </thead>
       <tbody></tbody>
     </table>
-    <div class="row-actions">
+    <div class="row" style="margin-top:8px">
       <button class="btn" id="addRow" type="button">➕ افزودن مهندس</button>
-      <span class="muted">برای هر مهندس یک ردیف اضافه کنید.</span>
+      <span class="muted">برای هر مهندس یک ردیف اضافه کنید. مدت قرارداد پایه محاسبه سهم است.</span>
     </div>
 
-    <!-- درخواست لینک دسترسی از ادمین (در حالت قفل) -->
-    <div class="row-actions" style="margin-top:10px">
-      <button class="btn ghost" id="requestAccessBtn" type="button">📩 درخواست لینک دسترسی از ادمین</button>
-      <span class="muted">این پیام فقط شامل نام شرکت و تاریخ پروانه است (بدون ارقام).</span>
-    </div>
-  </section>
-
-  <!-- 2) Outputs -->
-  <section id="outputs">
-    <h2>۲) خروجی‌ها</h2>
-    <div id="locked" class="locked">
-      🔒 نتایج پس از پرداخت و فقط با لینک اختصاصی ادمین (حاوی approve & key) باز می‌شود.
+    <div class="muted" style="margin-top:10px">
+      توضیح: مبالغ قرارداد مهندسین به‌صورت <b>خوداظهاری فروشنده</b> است و باید قبل از معامله توسط خریدار <b>راستی‌آزمایی</b> شود.
     </div>
 
-    <div id="results" style="display:none">
-      <div class="sum"><span>ارزش سابقه شرکت (قاعده مستقل):</span> <b id="valHistory">-</b></div>
-      <div class="sum"><span>ضریب سن شرکت:</span> <b id="coefAge">-</b></div>
-      <div class="sum"><span>ارزش تجهیزات (پس از ضریب):</span> <b id="valEquip">-</b></div>
-      <div class="sum"><span>جمع مهندسین شاغل:</span> <b id="valEmpActive">-</b></div>
-      <div class="sum"><span>جمع مهندسین هیئت‌مدیره:</span> <b id="valEmpBoard">-</b></div>
-      <div class="sum"><span>پروانه مدیرعامل:</span> <b id="valCEO">-</b></div>
-      <div class="sum"><span>سهمیه‌های مانده:</span> <b id="valQuota">-</b></div>
-      <div class="sum" style="border-width:2px;background:#EFF6FF"><span><b>ارزش تقریبی کل</b></span> <b id="valTotal">-</b></div>
-
-      <div class="row-actions" style="margin-top:14px">
-        <button class="btn" id="sendFullToAdmin" type="button">📲 ارسال گزارش کامل به ادمین (واتساپ)</button>
-        <button class="btn ghost" id="downloadReport" type="button">⬇️ دانلود گزارش کامل</button>
-        <span class="muted">ارسال/دانلود پس از باز شدن قفل در دسترس است.</span>
-      </div>
-      <div id="waFallback"></div>
+    <div class="center" style="margin-top:16px">
+      <button class="btn" id="requestBtn" type="button">📝 درخواست کارشناسی ارزش شرکت</button>
     </div>
   </section>
 
-  <!-- 3) Disclaimers -->
-  <section id="disclaimers">
-    <h2>۳) توضیحات، فرضیات و سلب مسئولیت</h2>
-    <ul>
-      <li>مبالغ قرارداد مهندسین به صورت <b>خوداظهاری فروشنده</b> ثبت شده و <b>قبل از انجام معامله</b>، الزامی است توسط خریدار <b>به دقت بررسی و راستی‌آزمایی</b> شود.</li>
-      <li>ضریب سن شرکت برای تجهیزات: &lt;۳سال=۰.۸ | ۳–۵سال=۰.۷۵ | ۵–۱۰سال=۰.۷ | &gt;۱۰سال=۰.۶۵.</li>
-      <li>قاعده ارزش سابقه: تا ۵ سال = ۱۰۰ میلیون تومان؛ هر سال اضافه = ۱۰۰ میلیون تومان؛ سقف ۷۰۰ میلیون تومان.</li>
-      <li>سهمیه‌های مانده: تعداد × (نصف قیمت روز هر سهمیه).</li>
-      <li><b>این برآورد کاملاً تجربی و مشورتی است و جنبهٔ رسمی و قانونی ندارد.</b> این ابزار صرفاً برآورد اولیه ارائه می‌دهد و جایگزین کارشناسی رسمی نیست.</li>
-    </ul>
-  </section>
+  <section id="status" class="hidden"></section>
 </main>
+
+<!-- انتخاب هزینه و ارسال -->
+<div id="confirmBox" aria-hidden="true">
+  <div class="card" role="dialog" aria-label="انتخاب هزینه کارشناسی">
+    <h3 style="margin:0 0 8px;color:#0C69B0">انتخاب هزینه کارشناسی</h3>
+    <div class="row" style="margin:6px 0 10px">
+      <label style="flex:1"><input type="radio" name="payOpt" value="3" checked> ۳,۰۰۰,۰۰۰ تومان — فقط کارشناسی</label>
+      <label style="flex:1"><input type="radio" name="payOpt" value="10"> ۱۰,۰۰۰,۰۰۰ تومان — کارشناسی + معرفی مشتری (حداکثر ۲ ماه)</label>
+    </div>
+    <div class="muted">با تأیید، اطلاعات شما برای ادمین ارسال می‌شود. نتیجهٔ محاسبات پس از بررسی پرداخت توسط ادمین برای شما ارسال می‌گردد.</div>
+    <div class="row" style="margin-top:10px;justify-content:flex-end">
+      <button class="btn ghost" id="cancelConfirm" type="button">انصراف</button>
+      <button class="btn" id="sendConfirm" type="button">✅ تأیید و ارسال درخواست</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ===== پیکربندی ===== */
-const ADMIN_WHATSAPP = "989036860573"; // شماره ادمین
-const WHATSAPP_FALLBACK_MS = 1200;
+const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycby5dn5H1RApWA9CtlSEwJAO-8zvhoAHxVVWKwlcE-GxGq8F4DKq1ZnLttJPgCvCxgh8ug/exec";
+const ADMIN_WHATSAPP = "989036860573"; // برای تماس/پیگیری در پیام موفقیت نمایش داده می‌شود
 
-/* ===== ابزارهای عمومی ===== */
-const fmt = n => (isNaN(n)? "-" : (+n).toLocaleString("fa-IR")+" تومان");
-function yearsSince(dateStr){
-  if(!dateStr) return 0;
-  const d=new Date(dateStr); if(isNaN(d)) return 0;
-  return (Date.now()-d)/(365.2425*24*3600*1000);
-}
+/* ===== ابزارها ===== */
+const fmt = n => (isNaN(n)? "-" : (+n).toLocaleString('fa-IR') + ' تومان');
+function yearsSince(dateStr){ if(!dateStr) return 0; const d=new Date(dateStr); if(isNaN(d)) return 0; return (Date.now()-d)/(365.2425*24*3600*1000); }
 function ageCoef(y){ if(y<3) return 0.8; if(y<=5) return 0.75; if(y<=10) return 0.7; return 0.65; }
 
 /* ===== جدول مهندسین ===== */
@@ -149,25 +124,31 @@ const tbody = document.querySelector("#engTable tbody");
 function addRow(){
   const tr=document.createElement("tr");
   tr.innerHTML = `
-    <td>
-      <select class="role"><option>شاغل</option><option>هیئت مدیره</option></select>
-    </td>
-    <td>
-      <select class="grade"><option>1</option><option>2</option><option>3</option></select>
-    </td>
-    <td><input type="number" class="months" min="0" step="0.1" value="12"></td>
-    <td><input type="number" class="contract" min="0" step="1" value=""></td>
+    <td><select class="role"><option>شاغل</option><option>هیئت مدیره</option></select></td>
+    <td><select class="grade"><option>1</option><option>2</option><option>3</option></select></td>
+    <td><input class="months" type="number" min="0" step="0.1" value="12"></td>
+    <td><input class="contract" type="number" min="0" step="1" value=""></td>
     <td class="contrib">-</td>
-    <td><button class="btn ghost btnDel" type="button">حذف</button></td>`;
+    <td><button class="btn ghost btnDel" type="button">حذف</button></td>
+  `;
   tbody.appendChild(tr);
-  tr.querySelector(".btnDel").addEventListener("click", ()=>{ tr.remove(); compute(); });
-  ["input","change"].forEach(ev=> tr.addEventListener(ev, compute));
-  compute();
+  tr.querySelector(".btnDel").addEventListener("click", ()=>{ tr.remove(); });
+  ["input","change"].forEach(ev=> tr.addEventListener(ev, computeContribs));
 }
 document.getElementById("addRow").addEventListener("click", addRow);
+addRow(); // یک ردیف اولیه
 
-/* ===== محاسبات ===== */
-function compute(){
+function computeContribs(){
+  tbody.querySelectorAll("tr").forEach(tr=>{
+    const months = +tr.querySelector(".months").value || 0;
+    const contract = +tr.querySelector(".contract").value || 0;
+    const contrib = contract * (months/12);
+    tr.querySelector(".contrib").textContent = fmt(contrib);
+  });
+}
+
+/* ===== محاسباتی که برای ادمین می‌فرستیم (بدون نمایش به کاربر) ===== */
+function buildCalculatedSummary(){
   const yrs = yearsSince(document.getElementById("licenseDate").value);
   const yrsInt = Math.floor(yrs);
   const historyVal = Math.min(700_000_000, 100_000_000 + Math.max(yrsInt - 5, 0)*100_000_000);
@@ -176,181 +157,107 @@ function compute(){
   const coef = ageCoef(yrs);
   const equipVal = equipPrice * coef;
 
-  let sumActive=0, sumBoard=0;
+  let sumActive=0, sumBoard=0, engineers=[];
   tbody.querySelectorAll("tr").forEach(tr=>{
     const role = tr.querySelector(".role").value;
+    const grade = tr.querySelector(".grade").value;
     const months = +tr.querySelector(".months").value || 0;
-    theContract = +tr.querySelector(".contract").value || 0;
-    const contrib = theContract * (months/12);
-    tr.querySelector(".contrib").textContent = fmt(contrib);
+    const contract = +tr.querySelector(".contract").value || 0;
+    const contrib = contract * (months/12);
     if(role==="شاغل") sumActive += contrib; else sumBoard += contrib;
+    engineers.push({role, grade, months, contract, contribText: fmt(contrib)});
   });
 
   const ceoPrice = +document.getElementById("ceoPrice").value || 0;
-  const qCount = +document.getElementById("quotaCount").value || 0;
-  const qPrice = +document.getElementById("quotaPrice").value || 0;
-  const quotaVal = qCount * qPrice * 0.5;
+  const quotaCount = 0, quotaPrice = 0; // اگر لازم شد بعداً اضافه می‌کنیم
+  const quotaVal = quotaCount * quotaPrice * 0.5;
 
   const total = historyVal + equipVal + sumActive + sumBoard + ceoPrice + quotaVal;
 
-  document.getElementById("valHistory").textContent = fmt(historyVal);
-  document.getElementById("coefAge").textContent = isNaN(coef) ? "-" : coef.toLocaleString("fa-IR");
-  document.getElementById("valEquip").textContent = fmt(equipVal);
-  document.getElementById("valEmpActive").textContent = fmt(sumActive);
-  document.getElementById("valEmpBoard").textContent = fmt(sumBoard);
-  document.getElementById("valCEO").textContent = fmt(ceoPrice);
-  document.getElementById("valQuota").textContent = fmt(quotaVal);
-  document.getElementById("valTotal").textContent = fmt(total);
+  return {
+    total, historyVal, equipVal,
+    empActive: sumActive, empBoard: sumBoard, ceo: ceoPrice, quota: quotaVal,
+    coefAge: isNaN(coef) ? "-" : coef
+  , engineers};
 }
-["companyName","licenseDate","equipPrice","ceoLicense","ceoPrice","quotaCount","quotaPrice"].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el) el.addEventListener("input", compute);
+
+/* ===== UI: باز/بستن پنجره انتخاب هزینه ===== */
+const confirmBox = document.getElementById("confirmBox");
+document.getElementById("requestBtn").addEventListener("click", ()=>{
+  computeContribs();
+  confirmBox.style.display = "flex";
+  confirmBox.setAttribute("aria-hidden","false");
+  window.scrollTo(0,0);
+});
+document.getElementById("cancelConfirm").addEventListener("click", ()=>{
+  confirmBox.style.display = "none";
+  confirmBox.setAttribute("aria-hidden","true");
 });
 
-/* ===== پیام کوتاه برای درخواست لینک دسترسی ===== */
-function buildAccessRequest(){
-  const company = (document.getElementById("companyName").value || "-").trim();
-  const license = document.getElementById("licenseDate").value || "-";
-  const ts = new Date().toISOString().slice(0,19).replace('T',' ');
-  return [
-    "🌐 *rastaval | درخواست لینک دسترسی*",
-    `🏢 *نام شرکت:* ${company}`,
-    `🗓️ *اولین پروانه:* ${license}`,
-    "لطفاً پس از تأیید پرداخت، لینک دسترسی (approve + key) را ارسال کنید.",
-    `🆔 شناسه: ${ts}`
-  ].join("\n");
-}
-
-/* ===== واتساپ عمومی (برای درخواست لینک) ===== */
-document.getElementById("requestAccessBtn").addEventListener("click", ()=>{
-  const text = encodeURIComponent(buildAccessRequest());
-  const phone = ADMIN_WHATSAPP;
-  const ua = navigator.userAgent || "";
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const inApp = /(FBAN|FBAV|Instagram|Line|Twitter|Telegram)/i.test(ua);
-  const deep   = `whatsapp://send?phone=${phone}&text=${text}`;
-  const webApi = `https://api.whatsapp.com/send?phone=${phone}&text=${text}`;
-  const waMe   = `https://wa.me/${phone}?text=${text}`;
-  const a = (url)=>{ const el=document.createElement("a"); el.href=url; el.target="_self"; el.style.display="none"; document.body.appendChild(el); el.click(); el.remove(); };
-  try{ a(deep); setTimeout(()=>a(isIOS||inApp?webApi:waMe),400); }catch(e){ a(webApi); }
-});
-
-/* ===== متن گزارش کامل برای ادمین (بعد از بازشدن قفل) ===== */
-function buildFullReport(){
-  const toFa = n => (isNaN(+n) ? "-" : (+n).toLocaleString("fa-IR"));
-  const toman = n => (isNaN(+n) ? "-" : toFa(n) + " تومان");
-
-  const company = (document.getElementById("companyName").value || "-").trim();
-  const license = document.getElementById("licenseDate").value || "-";
-  const total   = document.getElementById("valTotal").textContent || "-";
-  const hist    = document.getElementById("valHistory").textContent || "-";
-  const coef    = document.getElementById("coefAge").textContent || "-";
-  const equip   = document.getElementById("valEquip").textContent || "-";
-  const empA    = document.getElementById("valEmpActive").textContent || "-";
-  const empB    = document.getElementById("valEmpBoard").textContent || "-";
-  const ceo     = document.getElementById("valCEO").textContent || "-";
-  const quota   = document.getElementById("valQuota").textContent || "-";
-
-  const rows = [];
-  document.querySelectorAll("#engTable tbody tr").forEach((tr, i)=>{
-    const role     = tr.querySelector(".role")?.value || "";
-    const grade    = tr.querySelector(".grade")?.value || "";
-    const months   = tr.querySelector(".months")?.value || "";
-    const contract = tr.querySelector(".contract")?.value || "";
-    const contrib  = tr.querySelector(".contrib")?.textContent || "";
-    rows.push(`• ${i+1}) ${role} | پایه ${grade} | مدت: ${toFa(months)} ماه\n   مبلغ: ${toman(contract)} | سهم: ${contrib}`);
-  });
-
-  return [
-    "🌐 *rastaval | گزارش کامل ارزش نسبی شرکت*",
-    "",
-    `🏢 *نام شرکت:* ${company}`,
-    `🗓️ *اولین پروانه:* ${license}`,
-    "────────────────────",
-    `🧮 *جمع تقریبی کل:* ${total}`,
-    "",
-    "🔹 *ترکیب برآورد:*",
-    `• سابقه: ${hist}`,
-    `• ضریب سن تجهیزات: ${coef}`,
-    `• ارزش تجهیزات: ${equip}`,
-    `• جمع مهندسین شاغل: ${empA}`,
-    `• جمع هیئت‌مدیره: ${empB}`,
-    `• پروانه مدیرعامل: ${ceo}`,
-    `• سهمیه‌های مانده: ${quota}`,
-    "────────────────────",
-    "👷‍♂️ *خلاصه مهندسین:*",
-    rows.length ? rows.join("\n") : "—",
-    "",
-    "📝 *توضیح مهم:* این برآورد کاملاً تجربی و مشورتی است و جنبهٔ رسمی و قانونی ندارد."
-  ].join("\n");
-}
-
-/* ===== ارسال واتساپ گزارش کامل (بعد از بازشدن قفل) ===== */
-function openWhatsAppWith(text){
-  const encoded = encodeURIComponent(text);
-  const phone = ADMIN_WHATSAPP;
-  const ua = navigator.userAgent || "";
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const inApp = /(FBAN|FBAV|Instagram|Line|Twitter|Telegram)/i.test(ua);
-
-  const deep   = `whatsapp://send?phone=${phone}&text=${encoded}`;
-  const webApi = `https://api.whatsapp.com/send?phone=${phone}&text=${encoded}`;
-  const waMe   = `https://wa.me/${phone}?text=${encoded}`;
-
-  function openViaHiddenLink(url){
-    const a=document.createElement("a");
-    a.href=url; a.style.display="none"; a.rel="noopener"; a.target="_self";
-    document.body.appendChild(a); a.click(); a.remove();
-  }
+/* ===== ارسال به GAS ===== */
+document.getElementById("sendConfirm").addEventListener("click", async ()=>{
+  const statusSec = document.getElementById("status");
   try{
-    openViaHiddenLink(deep);
-    setTimeout(()=>{ openViaHiddenLink(isIOS || inApp ? webApi : waMe); }, 400);
-  }catch(e){
-    openViaHiddenLink(webApi);
-  }
+    // اعتبارسنجی پایه
+    const company = (document.getElementById("companyName").value || "").trim();
+    if(!company){ alert("لطفاً نام شرکت را وارد کنید."); return; }
+    const licenseDate = document.getElementById("licenseDate").value || "";
 
-  setTimeout(()=>{
-    const host = document.querySelector("#waFallback");
-    if(host && !host.dataset.shown){
-      host.dataset.shown = "1";
-      host.style.cssText = "margin-top:10px;padding:10px;border:1px dashed #cbd5e1;border-radius:8px;background:#fff";
-      host.innerHTML = `<div class="muted">اگر واتساپ باز نشد، این لینک را بزنید: <a href="${webApi}" style="color:#0C69B0">ارسال در واتساپ</a></div>`;
-      try{ navigator.clipboard && navigator.clipboard.writeText(text); }catch(_){}
+    // محاسبات و جزئیات
+    const calc = buildCalculatedSummary();
+
+    // مهندسین
+    const engineers = calc.engineers;
+
+    // گزینه هزینه
+    const optVal = document.querySelector('input[name="payOpt"]:checked').value;
+    const paymentOption = (optVal==='3')
+      ? '۳,۰۰۰,۰۰۰ تومان — فقط کارشناسی'
+      : '۱۰,۰۰۰,۰۰۰ تومان — کارشناسی + معرفی مشتری (حداکثر ۲ ماه)';
+
+    // ساخت payload
+    const payload = {
+      company, licenseDate,
+      equipPrice: +document.getElementById("equipPrice").value || 0,
+      ceoPrice: +document.getElementById("ceoPrice").value || 0,
+      quotaCount: 0, quotaPrice: 0,
+      total: calc.total, historyVal: calc.historyVal, equipVal: calc.equipVal,
+      empActive: calc.empActive, empBoard: calc.empBoard, ceo: calc.ceo, quota: calc.quota,
+      coefAge: calc.coefAge,
+      engineers,
+      paymentOption,
+      requestedAt: new Date().toISOString()
+    };
+
+    // ارسال
+    statusSec.classList.remove("hidden");
+    statusSec.innerHTML = '<div class="notice muted">در حال ارسال درخواست...</div>';
+    confirmBox.style.display = "none";
+
+    const res = await fetch(SUBMIT_ENDPOINT, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(r=>r.json()).catch(e=>({ok:false,error:String(e)}));
+
+    if(res && res.ok){
+      statusSec.innerHTML = `
+        <div class="notice ok">
+          درخواست شما دریافت شد ✅<br><br>
+          گزینه انتخابی: <b>${paymentOption}</b><br><br>
+          لطفاً مبلغ را کارت‌به‌کارت کنید و سپس پیام «پرداخت شد» را برای ادمین ارسال کنید.<br>
+          <a href="https://wa.me/${ADMIN_WHATSAPP}" target="_blank">ارسال پیام به ادمین در واتساپ</a>
+        </div>`;
+      // پاک‌سازی نرم (اختیاری)
+      // document.getElementById("inputsForm")?.reset();
+    }else{
+      statusSec.innerHTML = `<div class="notice" style="background:#fee;border-color:#fecaca">خطا در ارسال درخواست: ${(res&&res.error)?res.error:'نامشخص'}</div>`;
     }
-  }, WHATSAPP_FALLBACK_MS);
-}
-
-document.getElementById("sendFullToAdmin").addEventListener("click", ()=>{
-  try{ compute(); }catch(e){}
-  const msg = buildFullReport();
-  openWhatsAppWith(msg);
-});
-document.getElementById("downloadReport").addEventListener("click", ()=>{
-  try{ compute(); }catch(e){}
-  const text = buildFullReport();
-  const cn = (document.getElementById("companyName").value || "company").replace(/\s+/g,"_");
-  const blob = new Blob([text],{type:"text/plain;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href=url; a.download=`rastaval_report_${cn}.txt`; a.click();
-  URL.revokeObjectURL(url);
-});
-
-/* ===== بازشدن قفل با ?approve=نام‌شرکت&key=توکن ===== */
-(function handleApprove(){
-  const p = new URLSearchParams(location.search);
-  const approve = p.get("approve");
-  const key = p.get("key"); // وجود هر دو شرط است
-  if(approve && key){
-    const cn = document.getElementById("companyName");
-    if(cn && !cn.value) cn.value = approve;
-    document.getElementById("locked").style.display = "none";
-    document.getElementById("results").style.display = "";
-    try{ compute(); }catch(e){}
+  }catch(err){
+    document.getElementById("status").classList.remove("hidden");
+    document.getElementById("status").innerHTML = `<div class="notice" style="background:#fee;border-color:#fecaca">خطای غیرمنتظره: ${String(err)}</div>`;
   }
-})();
-
-/* ===== مقداردهی اولیه ===== */
-addRow(); // یک ردیف مهندس
+});
 </script>
 </body>
 </html>
